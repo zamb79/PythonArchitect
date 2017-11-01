@@ -1,4 +1,7 @@
 
+import sys
+sys.path.append("..")
+
 from matplotlib import pyplot as plt
 from shapely.geometry import Polygon
 from descartes.patch import PolygonPatch

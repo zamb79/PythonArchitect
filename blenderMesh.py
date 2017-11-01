@@ -42,7 +42,7 @@ obName = "{:s}"
 me = bpy.data.meshes.new(meshName)
 ob = bpy.data.objects.new(obName, me)
 
-ob = bpy.data.objects.new(obName)
+#ob = bpy.data.objects.new(obName)
 scn = bpy.context.scene
 scn.objects.link(ob)
 scn.objects.active = ob
