@@ -5,6 +5,19 @@ headStr = """import bpy
 import mathutils
 from mathutils import Vector
 
+# convenince function for removing all objects
+def removeAll():
+    for o in bpy.data.objects:
+        if o.type == 'MESH':
+            o.select = True
+        else:
+            o.select = False
+
+    # call the operator once
+    bpy.ops.object.delete()
+
+removeAll()
+
 """
 
 quadStr = """

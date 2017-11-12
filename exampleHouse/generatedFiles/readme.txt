@@ -1,0 +1,1 @@
+This folder will contain generated files (SVG files and python (.py) blender code)
