@@ -81,8 +81,9 @@ for i in range(0, len(groundBorderPts)):
 ar.mf.mesh("ground", groundPts, faces, (0.8, 1.0, 0.0))
 
 # cut out the house from the ground
-ar.mf.difference((-4, -10, 0), (houseWidth, houseHeight, 5), "houseBox", "ground")  # garage door
-ar.mf.difference((0, 0, -0.4), (houseWidth, houseHeight, 1), "houseBoxFloor", "ground")  # garage door
+ar.mf.difference((-4.0, -10.0, 0.0), (houseWidth, houseHeight, 5.0), "houseBox", "ground")  # garage door
+ar.mf.difference((0.0, 0.0, -0.4), (houseWidth, houseHeight, 0.05), "houseBoxFloor", "ground")  # garage door
+
 
 				
 ####################################################################
@@ -101,7 +102,7 @@ ar.wall(owt, 0, houseWidth-owt, owt, "ground_w1")
 ar.wall(owt, houseHeight-owt, houseWidth-owt, houseHeight, "ground_w2")
 ar.wall(0, 0, owt, houseHeight, "ground_w3")
 ar.wall(houseWidth-owt, 0, houseWidth, houseHeight, "ground_w4")
-ar.difference((0.8, 0, 0), (5.2, owt, 2.25), "garageDoor", "ground_w1")  # garage door
+ar.difference((0.8, 0.0, 0.0), (5.2, owt, 2.25), "garageDoor", "ground_w1")  # garage door
 ar.difference((6.5, 0, 0), (7.7, owt, 2.1), "mainEntrance", "ground_w1")  # main house entrance door
 ar.difference((8.4, 0, 1.2), (9.4, owt, 2.0), "window1", "ground_w1")  # window 1
 ar.difference((12.0, 0, 1.2), (13.0, owt, 2.0), "window2", "ground_w1")  # window 2
@@ -141,15 +142,10 @@ ar.text(r3_x + 1.0, r3_y - 2.0, "Zi 3", roomFontSize)
 # stairs
 stairDepth = 0.27
 stairWidth = 1.12
-stairHeight = 0.185
-stairsX = houseWidth - owt - iwt - room1Width - 2 * stairWidth
-stairsX = stairsX + 1.2
-stairsY = 5.0
-ar.drawStairs(stairsX, stairsY - stairDepth * 8, 'v', 8, stairWidth, stairDepth, stairHeight)
-ar.drawStairs(stairsX - stairDepth * 8, stairsY, 'h', 7, stairWidth, stairDepth, stairHeight)
-ar.line(stairsX+stairWidth, stairsY, stairsX+stairWidth, stairsY+stairWidth)
-ar.line(stairsX, stairsY+stairWidth, stairsX+stairWidth, stairsY+stairWidth)
-
+stairHeight = 3.0 / 16.0
+stairsX = owt + garageWidth + iwt
+stairsY = owt
+ar.drawStairs(stairsX, stairsY, 'v', 8, stairWidth, stairDepth, stairHeight)
 
 # bottom of ground floor
 ar.mf.quad("base", (0, 0, -0.4), (houseWidth, houseHeight, 0))
@@ -238,17 +234,17 @@ ar.wall(houseWidth-owt, 0, houseWidth, houseHeight, name="first_w4", color=brown
 
 
 # stairs
-ar.drawStairs(stairsX, stairsY - stairDepth * 8, 'v', 8, stairWidth, stairDepth, stairHeight)
-ar.drawStairs(stairsX - stairDepth * 8, stairsY, 'h', 7, stairWidth, stairDepth, stairHeight)
-ar.line(stairsX+stairWidth, stairsY, stairsX+stairWidth, stairsY+stairWidth)
-ar.line(stairsX, stairsY+stairWidth, stairsX+stairWidth, stairsY+stairWidth)
+#ar.drawStairs(stairsX, stairsY - stairDepth * 8, 'v', 8, stairWidth, stairDepth, stairHeight)
+#ar.drawStairs(stairsX - stairDepth * 8, stairsY, 'h', 7, stairWidth, stairDepth, stairHeight)
+#ar.line(stairsX+stairWidth, stairsY, stairsX+stairWidth, stairsY+stairWidth)
+#ar.line(stairsX, stairsY+stairWidth, stairsX+stairWidth, stairsY+stairWidth)
 
 ar.wall(garageWidth+owt, owt, garageWidth+owt+iwt, houseHeight-owt, name="wallWZ", color=brown)
 ar.difference((garageWidth+owt, 4.0, 0.0), (garageWidth+owt+iwt, 6-0, 2.0), "doorLivingRoom", "wallWZ")  # doorLivingRoom
 ar.text(3.0, 3.0, "Wohnzimmer", roomFontSize)
 
 ar.mf.quad("baseFirstFloor", (0, 0, ar.wallHeight), (houseWidth, houseHeight, ar.etageHeight))
-ar.difference((garageWidth+owt*2+1.0, 4.9, -1.0), (garageWidth+owt*2+4.0, 6.1, 1.0), "stairsHole", "baseFirstFloor")  # hole for stairs in floor of first floor
+ar.difference((garageWidth+owt+iwt, owt, -1.0), (garageWidth+owt+iwt+stairWidth, owt+stairWidth+stairDepth*10, 1.0), "stairsHole", "baseFirstFloor")  # hole for stairs in floor of first floor
 
 # Balkon
 ar.mf.quad("Balkon", (0, -2, ar.wallHeight), (4, 0, ar.etageHeight))

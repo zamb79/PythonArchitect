@@ -91,19 +91,19 @@ def measureLine(x, y, align, length, skewLineWidth, scaling = 1):
 
 def drawStairs(x, y, align, numStairs, stairWidth, stairDepth, stairHeight):
     global mf
-    if (align == 'v'):
-        line(x, y, x, y+numStairs*stairDepth)
-        line(x+stairWidth, y, x+stairWidth, y+numStairs*stairDepth)
-    else:
-        line(x, y, x+numStairs*stairDepth, y)
-        line(x, y+stairWidth, x+numStairs*stairDepth, y+stairWidth)
-    for i in range(0, numStairs + 1):
-        if (align == 'v'):
-            line(x, y+i*stairDepth, x+stairWidth, y+i*stairDepth)
-            mf.quad("stair", (x, (y+i*stairDepth), stairHeight*i), ((x+stairWidth), (y+(i+1)*stairDepth), stairHeight*(i+1)))
-        else:
-            line(x+i*stairDepth, y, x+i*stairDepth, y+stairWidth)
-            mf.quad("stair", ((x+i*stairDepth), y, (stairHeight*(2*numStairs-i))), ((x+(i+1)*stairDepth), (y+stairWidth), stairHeight*(2*numStairs-i+1)))
+    line(x+stairWidth, y+stairWidth, x+stairWidth+stairDepth*4, y+stairWidth)
+    line(x+stairWidth, y+stairWidth, x+stairWidth, y+stairWidth+stairDepth*10)
+    for i in range(0,5):
+        z1 = stairHeight * (float(i)+0.5)
+        z2 = stairHeight * (i+1)
+        line(x+stairWidth+(stairDepth*(4-i)), y, x+stairWidth+(stairDepth*(4-i)), y+stairWidth)
+        mf.quad("stair", (x+stairWidth+(stairDepth*(3-i)), y, z1), (x+stairWidth+(stairDepth*(4-i)), y+stairWidth, z2))
+    for i in range(0,11):
+        z1 = stairHeight * (float(i)+5.5)
+        z2 = stairHeight * (i+6)
+        line(x, y+stairWidth+i*stairDepth, x+stairWidth, y+stairWidth+i*stairDepth)
+        mf.quad("stair", (x, y+stairWidth+i*stairDepth, z1), (x+stairWidth, y+stairWidth+(i+1)*stairDepth, z2))
+    mf.quad("stair", (x, y, stairHeight * 4.5), (x+stairWidth, y+stairWidth, stairHeight * 5))
 
 def savePolygonAsSVG_flipY(xyCoords):
     global svgFile

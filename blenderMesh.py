@@ -91,12 +91,12 @@ class MeshFile:
     def createMeshStr(self, name, pts, faces, color = (0.5, 0.5, 0.5)):
         outStr = ""
         outStr = outStr + meshStartStr.format(name, name)
-        print("faces: "+ str(len(faces)))
+        #print("faces: "+ str(len(faces)))
         for v in pts:
-            print(str(v))
+            #print(str(v))
             outStr = outStr + "verts.append(({:f}, {:f}, {:f}))\n".format(float(v[0]), float(v[1]), float(v[2]))
         for f in faces:
-            print(str(f))
+            #print(str(f))
             outStr = outStr + "faces.append(({:d}, {:d}, {:d}))\n".format(int(f[0]), int(f[1]), int(f[2]))                
         outStr = outStr + meshEndStr
 		
