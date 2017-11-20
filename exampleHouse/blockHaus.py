@@ -11,7 +11,7 @@ import svg
 import blenderMesh as bm
 import architecture as ar
 
-ar.startX = 7.0
+ar.startX = 11.0
 ar.startY = 5.0
 
 ar.svgHeight = 744.09448
@@ -30,7 +30,7 @@ ar.initMeshFile("generatedFiles/generateCad.py")
 
 # units: 1 = 1m
 
-houseWidth = 14.0
+houseWidth = 8.0
 houseHeight = 10.0
 
 outWallThick = 0.5
@@ -46,7 +46,7 @@ iwt = innerWallThick
 # Coordinates in file are relative to 105000.0 m in X and 314150.0 m in Y
 
 # rotate and move to good origin
-pts = np.genfromtxt('points.csv', delimiter=",") - [1, 10.5, 429]
+pts = np.genfromtxt('points.csv', delimiter=",") - [1, 10.5, 426]
 a = np.pi / 180.0 * -19.3
 pXY = pts[:,0:2] * np.mat([[np.cos(a), np.sin(a)], [-np.sin(a), np.cos(a)]])
 pXY = pXY
