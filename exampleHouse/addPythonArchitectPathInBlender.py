@@ -8,5 +8,5 @@
 # into python console, which will generate the full CAD file
 
 import sys
-sys.path.append('c:\\development\\PythonArchitect\\exampleHouse\\generatedFiles')
+sys.path.append('c:\\Users\\Sebastian\\Documents\\GrundRettenbach\\Hausplan_004\\PythonArchitect\\exampleHouse\\generatedFiles')
 import generateCad

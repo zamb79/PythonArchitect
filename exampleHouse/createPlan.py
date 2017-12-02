@@ -81,8 +81,8 @@ for i in range(0, len(groundBorderPts)):
 ar.mf.mesh("ground", groundPts, faces, (0.8, 1.0, 0.0))
 
 # cut out the house from the ground
-ar.mf.difference((-4.0, -10.0, 0.0), (houseWidth, houseHeight, 5.0), "houseBox", "ground")  # garage door
-ar.mf.difference((0.0, 0.0, -0.4), (houseWidth, houseHeight, 0.05), "houseBoxFloor", "ground")  # garage door
+ar.mf.difference((-4.0, -10.0, 0.0), (houseWidth, houseHeight, 5.0), "houseBox", "ground")
+ar.mf.difference((0.0, 0.0, -0.4), (houseWidth, houseHeight, 0.05), "houseBoxFloor", "ground")
 
 
 				
@@ -102,7 +102,7 @@ ar.wall(owt, 0, houseWidth-owt, owt, "ground_w1")
 ar.wall(owt, houseHeight-owt, houseWidth-owt, houseHeight, "ground_w2")
 ar.wall(0, 0, owt, houseHeight, "ground_w3")
 ar.wall(houseWidth-owt, 0, houseWidth, houseHeight, "ground_w4")
-ar.difference((0.8, 0.0, 0.0), (5.2, owt, 2.25), "garageDoor", "ground_w1")  # garage door
+ar.difference((0.8, -0.0001, 0.0001), (5.2, owt+0.0001, 2.25), "garageDoor", "ground_w1")  # garage door
 ar.difference((6.5, 0, 0), (7.7, owt, 2.1), "mainEntrance", "ground_w1")  # main house entrance door
 ar.difference((8.4, 0, 1.2), (9.4, owt, 2.0), "window1", "ground_w1")  # window 1
 ar.difference((12.0, 0, 1.2), (13.0, owt, 2.0), "window2", "ground_w1")  # window 2
