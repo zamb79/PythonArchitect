@@ -43,8 +43,18 @@ def wall(x1, y1, x2, y2, name = "wall", color=(0.5, 0.5, 0.5)):
     rect(x1, y1, x2, y2)    
     mf.quad(name, (x1,y1,etage * etageHeight), (x2,y2,(etage * etageHeight + wallHeight)), color)
 
-def difference(pt1, pt2, diffName, surroundingWallName = "wall"):
+def difference(pt1, pt2, diffName, surroundingWallName = "wall", extendAlongAxis = -1):
     global etage
+    extX = 0
+    extY = 0
+    extZ = 0
+    extEpsilon = 0.01
+    if (extendAlongAxis == 0):
+        extX = extEpsilon
+    elif (extendAlongAxis == 1):
+        extY = extEpsilon
+    elif (extendAlongAxis == 2):
+        extZ = extEpsilon
     x1 = pt1[0]
     y1 = pt1[1]
     z1 = pt1[2]
@@ -54,8 +64,8 @@ def difference(pt1, pt2, diffName, surroundingWallName = "wall"):
     plt.plot((10*(startX+x1), 10*(startX+x2), 10*(startX+x2), 10*(startX+x1), 10*(startX+x1)), (10*(startY+y1), 10*(startY+y1), 10*(startY+y2), 10*(startY+y2), 10*(startY+y1)), '-k')
     if (z1 < 1.4) and (z2 > 1.5):
 	    svgFile.writeRect(svgScale*(startX+x1), svgHeight-svgScale*(startY+y2), svgScale*(x2-x1), svgScale*(y2-y1), "#bbbbbb")
-    pt1 = (x1, y1, etage * etageHeight + z1)
-    pt2 = (x2, y2, etage * etageHeight + z2)
+    pt1 = (x1 - extX, y1 - extY, etage * etageHeight + z1 - extZ)
+    pt2 = (x2 + extX, y2 + extY, etage * etageHeight + z2 + extZ)
     mf.difference(pt1, pt2, diffName, surroundingWallName)
 
 def line(x1, y1, x2, y2):

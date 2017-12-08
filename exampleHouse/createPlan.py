@@ -11,6 +11,14 @@ import svg
 import blenderMesh as bm
 import architecture as ar
 
+# blender for animation:
+# Dope sheet, Timeline
+# blender shortcuts:
+# Strg + Shift + Num0 -> Camera = current viewitems
+# I -> Add current view as key frame 
+
+e = 0.001
+
 ar.startX = 7.0
 ar.startY = 5.0
 
@@ -81,7 +89,7 @@ for i in range(0, len(groundBorderPts)):
 ar.mf.mesh("ground", groundPts, faces, (0.8, 1.0, 0.0))
 
 # cut out the house from the ground
-ar.mf.difference((-4.0, -10.0, 0.0), (houseWidth, houseHeight, 5.0), "houseBox", "ground")
+ar.mf.difference((-4.0 - e, -10.0 - e, 0.0 - e), (houseWidth + e, houseHeight + e, 5.0 + e), "houseBox", "ground")
 ar.mf.difference((0.0, 0.0, -0.4), (houseWidth, houseHeight, 0.05), "houseBoxFloor", "ground")
 
 
@@ -98,46 +106,46 @@ ax = fig.add_subplot(111)
 ar.text(3, 12, "Erdgeschoss", 20)
 
 # outer walls of house
-ar.wall(owt, 0, houseWidth-owt, owt, "ground_w1")
-ar.wall(owt, houseHeight-owt, houseWidth-owt, houseHeight, "ground_w2")
-ar.wall(0, 0, owt, houseHeight, "ground_w3")
-ar.wall(houseWidth-owt, 0, houseWidth, houseHeight, "ground_w4")
-ar.difference((0.8, -0.0001, 0.0001), (5.2, owt+0.0001, 2.25), "garageDoor", "ground_w1")  # garage door
-ar.difference((6.5, 0, 0), (7.7, owt, 2.1), "mainEntrance", "ground_w1")  # main house entrance door
-ar.difference((8.4, 0, 1.2), (9.4, owt, 2.0), "window1", "ground_w1")  # window 1
-ar.difference((12.0, 0, 1.2), (13.0, owt, 2.0), "window2", "ground_w1")  # window 2
+ar.wall(owt, 0, houseWidth-owt, owt, "ground_w1")  # south wall
+ar.wall(owt, houseHeight-owt, houseWidth-owt, houseHeight, "ground_w2")  # north wall
+ar.wall(0, 0, owt, houseHeight, "ground_w3")  # west wall
+ar.wall(houseWidth-owt, 0, houseWidth, houseHeight, "ground_w4")  # east wall
+ar.difference((0.8, 0, e), (5.2, owt, 2.25), "garageDoor", "ground_w1", extendAlongAxis = 1)  # garage door
+ar.difference((8.4, 0, e), (9.6, owt, 2.1), "mainEntrance", "ground_w1", extendAlongAxis = 1)  # main house entrance door
+ar.difference((6.5, 0, 1.2), (7.5, owt, 2.0), "window1", "ground_w1", extendAlongAxis = 1)  # window 1
+ar.difference((12.0, 0, 1.2), (13.0, owt, 2.0), "window2", "ground_w1", extendAlongAxis = 1)  # window 2
+ar.difference((houseWidth - owt, 2.0, 1.2), (houseWidth, 3.0, 2.0), "window3", "ground_w4", extendAlongAxis = 0)  # window 3
+ar.difference((houseWidth - owt, 6.0, 1.2), (houseWidth, 7.0, 2.0), "window4", "ground_w4", extendAlongAxis = 0)  # window 4
 
 # garage 
 garageWidth = 5.0
-ar.wall(garageWidth+owt, owt, garageWidth+owt+iwt, houseHeight-owt)
+ar.wall(garageWidth+owt, owt, garageWidth+owt+iwt, houseHeight-owt, "garageInnerWall")
+ar.difference((owt + garageWidth, 5.0, e), (owt + garageWidth + iwt, 6.0, 2.25), "innerDoorToGarage", "garageInnerWall", extendAlongAxis = 0)  # inner door to garage
 ar.text(2.0, 3.0, "Garage", roomFontSize)
 
 # room right bottom (room 1)
 room1Width = 3.5
-room1Height = 3.0
+room1Height = 4.0
 r1_x = houseWidth - owt - room1Width - iwt
 r1_y = room1Height + owt + iwt
-ar.wall(r1_x, owt, r1_x + iwt, r1_y)
+ar.wall(r1_x, owt, r1_x + iwt, r1_y, "frontWallRoom1")
 ar.wall(r1_x, r1_y - iwt, houseWidth, r1_y)
 ar.text(r1_x + 1.0, r1_y - 2.0, "Zi 1", roomFontSize)
+ar.difference((owt + garageWidth + iwt + 4.0, 3.0, e), (owt + garageWidth + iwt + 4.0 + iwt, 4.0, 2.25), "doorRoom1", "frontWallRoom1", extendAlongAxis = 0)  # door to room 1
 
 # room2 in ground floor
 room2Width = 3.5
-room2Height = 3.0
+room2Height = 5.0
 r2_x = houseWidth - owt - room2Width - iwt
 r2_y = r1_y + iwt + room2Height
-ar.wall(r2_x, r1_y, r2_x + iwt, r2_y)
+ar.wall(r2_x, r1_y, r2_x + iwt, r2_y, "frontWallRoom2")
 ar.wall(r2_x, r2_y - iwt, houseWidth, r2_y)
 ar.text(r2_x + 1.0, r2_y - 2.0, "Zi 2", roomFontSize)
+ar.difference((owt + garageWidth + iwt + 4.0, 5.0, e), (owt + garageWidth + iwt + 4.0 + iwt, 6.0, 2.25), "doorRoom2",  "frontWallRoom2", extendAlongAxis = 0)  # door to room 2
 
 # room3 in ground floor
-room3Width = 3.5
-room3Height = 2.5
-r3_x = houseWidth - owt - room3Width - iwt
-r3_y = r2_y + iwt + room3Height
-ar.wall(r3_x, r2_y, r3_x + iwt, r3_y)
-ar.wall(r3_x, r3_y - iwt, houseWidth, r3_y)
-ar.text(r3_x + 1.0, r3_y - 2.0, "Zi 3", roomFontSize)
+ar.wall(owt + garageWidth + iwt, 6.5, owt + garageWidth + iwt + 4.0, 6.5 + iwt, "room3Wall")
+ar.difference((owt + garageWidth + iwt + 2.5, 6.5, e), (owt + garageWidth + iwt + 3.5, 6.5 + iwt, 2.25), "doorRoom3", "room3Wall", extendAlongAxis = 1)  # door to room 3
 
 # stairs
 stairDepth = 0.27
@@ -222,14 +230,15 @@ ar.text(3, 12, "Erster Stock", 20)
 # outer walls of house
 brown = (0.95, 0.4, 0.13)
 ar.wall(owt, 0, houseWidth-owt, owt, name="first_w1", color=brown)
-ar.difference((0.8, 0, 0), (3.8, owt, 2.25), "terrasseDoorSouth", "first_w1")  # terrasseDoorSouth
-ar.difference((6.5, 0, 1.0), (7.3, owt, 2.0), "window3", "first_w1")  # window 3
-ar.difference((8.4, 0, 1.0), (9.2, owt, 2.0), "window4", "first_w1")  # window 4
-ar.difference((12.0, 0, 1.0), (12.8, owt, 2.0), "window5", "first_w1")  # window 5
+ar.difference((0.8, 0, 0 + e), (3.8, owt, 2.25), "terrasseDoorSouth", "first_w1", extendAlongAxis = 1)  # terrasseDoorSouth
+ar.difference((6.5, 0, 1.0), (7.3, owt, 2.0), "window11", "first_w1", extendAlongAxis = 1)  # window 11
+ar.difference((8.4, 0, 1.0), (9.2, owt, 2.0), "window12", "first_w1" , extendAlongAxis = 1)  # window 12
+ar.difference((12.0, 0, 1.0), (12.8, owt, 2.0), "window13", "first_w1", extendAlongAxis = 1)  # window 13
 ar.wall(owt, houseHeight-owt, houseWidth-owt, houseHeight, name="first_w2", color=brown)
 ar.wall(0, 0, owt, houseHeight, name="first_w3", color=brown)
-ar.difference((0, 1.0, 0), (owt, 4.0, 2.25), "terrasseDoorWest", "first_w3")  # terrasseDoorWest
-ar.difference((0, 7.4, 1.0), (owt, 9.0, 2.25), "window6", "first_w3")  # window 6
+ar.difference((0, 1.0, 0+e), (owt, 4.0, 2.25), "terrasseDoorWest", "first_w3", extendAlongAxis = 0)  # terrasseDoorWest
+ar.difference((0, 7.4, 1.0), (owt, 9.0, 2.25), "window14", "first_w3", extendAlongAxis = 0)  # window 14: from kitchen to garden
+ar.difference((0, 5.6, 1.0), (owt, 7.2, 2.25), "window15", "first_w3", extendAlongAxis = 0)  # window 15: from living room to garden
 ar.wall(houseWidth-owt, 0, houseWidth, houseHeight, name="first_w4", color=brown)
 
 
@@ -240,7 +249,7 @@ ar.wall(houseWidth-owt, 0, houseWidth, houseHeight, name="first_w4", color=brown
 #ar.line(stairsX, stairsY+stairWidth, stairsX+stairWidth, stairsY+stairWidth)
 
 ar.wall(garageWidth+owt, owt, garageWidth+owt+iwt, houseHeight-owt, name="wallWZ", color=brown)
-ar.difference((garageWidth+owt, 4.0, 0.0), (garageWidth+owt+iwt, 6-0, 2.0), "doorLivingRoom", "wallWZ")  # doorLivingRoom
+ar.difference((garageWidth+owt, 4.0, 0.0 + e), (garageWidth+owt+iwt, 6-0, 2.0), "doorLivingRoom", "wallWZ", extendAlongAxis=0)  # doorLivingRoom
 ar.text(3.0, 3.0, "Wohnzimmer", roomFontSize)
 
 ar.mf.quad("baseFirstFloor", (0, 0, ar.wallHeight), (houseWidth, houseHeight, ar.etageHeight))
