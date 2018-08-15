@@ -157,6 +157,8 @@ def pltPolygon(pp):
 
 def initSvgFile(fileName):
     global svgFile
+    global polygon
+    polygon = None
     svgFile = svg.SVG()
     svgFile.openFile(fileName)
 	

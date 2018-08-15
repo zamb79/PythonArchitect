@@ -7,3 +7,7 @@ is to run a script and generate SVG drawings and blender code in parallel. SVG d
 of 2D drawings. In order to see the 2D drawings you may use InkScape or any other SVG visualization software. 
 Blender code is generated to create 3D visualization within Blender. Just execute the generated Python
 code from the Python console of Blender.
+
+The current version is developed for (and tested with) Blender 2.79 and Python 3.5.2.
+
+

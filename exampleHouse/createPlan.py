@@ -205,6 +205,7 @@ ax.set_ylim(*yrange)
 ax.set_aspect(1)
 
 plt.show()
+plt.close()
 
 ar.savePolygonAsSVG(ar.polygon)
 
@@ -242,13 +243,38 @@ ar.difference((0, 5.6, 1.0), (owt, 7.2, 2.25), "window15", "first_w3", extendAlo
 ar.wall(houseWidth-owt, 0, houseWidth, houseHeight, name="first_w4", color=brown)
 
 
+# room right bottom (room 4)
+room1Width = 3.5
+room1Height = 4.0
+r1_x = houseWidth - owt - room1Width - iwt
+r1_y = room1Height + owt + iwt
+ar.wall(r1_x, owt, r1_x + iwt, r1_y, "frontWallRoom1")
+ar.wall(r1_x, r1_y - iwt, houseWidth, r1_y)
+ar.text(r1_x + 1.0, r1_y - 2.0, "Zi 4", roomFontSize)
+ar.difference((owt + garageWidth + iwt + 4.0, 3.0, e), (owt + garageWidth + iwt + 4.0 + iwt, 4.0, 2.25), "doorRoom4", "frontWallRoom4", extendAlongAxis = 0)  # door to room 4
+
+# room2 in first floor
+room2Width = 3.5
+room2Height = 5.0
+r2_x = houseWidth - owt - room2Width - iwt
+r2_y = r1_y + iwt + room2Height
+ar.wall(r2_x, r1_y, r2_x + iwt, r2_y, "frontWallRoom5")
+ar.wall(r2_x, r2_y - iwt, houseWidth, r2_y)
+ar.text(r2_x + 1.0, r2_y - 2.0, "Zi 5", roomFontSize)
+ar.difference((owt + garageWidth + iwt + 4.0, 5.0, e), (owt + garageWidth + iwt + 4.0 + iwt, 6.0, 2.25), "doorRoom5",  "frontWallRoom5", extendAlongAxis = 0)  # door to room 5
+
+# room6 in first floor
+ar.wall(owt + garageWidth + iwt, 6.5, owt + garageWidth + iwt + 4.0, 6.5 + iwt, "room6Wall")
+ar.difference((owt + garageWidth + iwt + 2.5, 6.5, e), (owt + garageWidth + iwt + 3.5, 6.5 + iwt, 2.25), "doorRoom6", "room6Wall", extendAlongAxis = 1)  # door to room 6
+
+
 # stairs
 #ar.drawStairs(stairsX, stairsY - stairDepth * 8, 'v', 8, stairWidth, stairDepth, stairHeight)
 #ar.drawStairs(stairsX - stairDepth * 8, stairsY, 'h', 7, stairWidth, stairDepth, stairHeight)
 #ar.line(stairsX+stairWidth, stairsY, stairsX+stairWidth, stairsY+stairWidth)
 #ar.line(stairsX, stairsY+stairWidth, stairsX+stairWidth, stairsY+stairWidth)
 
-ar.wall(garageWidth+owt, owt, garageWidth+owt+iwt, houseHeight-owt, name="wallWZ", color=brown)
+ar.wall(garageWidth+owt, owt, garageWidth+owt+iwt, houseHeight-owt, name="wallWZ", color=brown)  # wall between stairs and living room
 ar.difference((garageWidth+owt, 4.0, 0.0 + e), (garageWidth+owt+iwt, 6-0, 2.0), "doorLivingRoom", "wallWZ", extendAlongAxis=0)  # doorLivingRoom
 ar.text(3.0, 3.0, "Wohnzimmer", roomFontSize)
 
