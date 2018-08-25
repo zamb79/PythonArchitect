@@ -248,7 +248,7 @@ room1Width = 3.5
 room1Height = 4.0
 r1_x = houseWidth - owt - room1Width - iwt
 r1_y = room1Height + owt + iwt
-ar.wall(r1_x, owt, r1_x + iwt, r1_y, "frontWallRoom1")
+ar.wall(r1_x, owt, r1_x + iwt, r1_y, "frontWallRoom4")
 ar.wall(r1_x, r1_y - iwt, houseWidth, r1_y)
 ar.text(r1_x + 1.0, r1_y - 2.0, "Zi 4", roomFontSize)
 ar.difference((owt + garageWidth + iwt + 4.0, 3.0, e), (owt + garageWidth + iwt + 4.0 + iwt, 4.0, 2.25), "doorRoom4", "frontWallRoom4", extendAlongAxis = 0)  # door to room 4
