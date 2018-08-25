@@ -243,35 +243,41 @@ ar.difference((0, 5.6, 1.0), (owt, 7.2, 2.25), "window15", "first_w3", extendAlo
 ar.wall(houseWidth-owt, 0, houseWidth, houseHeight, name="first_w4", color=brown)
 
 
-# room right bottom (room 4)
-room1Width = 3.5
-room1Height = 4.0
-r1_x = houseWidth - owt - room1Width - iwt
-r1_y = room1Height + owt + iwt
-ar.wall(r1_x, owt, r1_x + iwt, r1_y, "frontWallRoom4")
-ar.wall(r1_x, r1_y - iwt, houseWidth, r1_y)
-ar.text(r1_x + 1.0, r1_y - 2.0, "Zi 4", roomFontSize)
-ar.difference((owt + garageWidth + iwt + 4.0, 3.0, e), (owt + garageWidth + iwt + 4.0 + iwt, 4.0, 2.25), "doorRoom4", "frontWallRoom4", extendAlongAxis = 0)  # door to room 4
+# rooms 4 and 7 (in the south of first floor)
+ofsFromStair = stairWidth + 0.2
+room7_leftX = owt + garageWidth + iwt + ofsFromStair
+room7_Width = 3.0
+room7_Height = 4.2
+room7_stair_edge = 0.6
+ar.wall(room7_leftX, room7_Height, houseWidth-owt, room7_Height - iwt, "room7and4Wall")  # top wall of rooms 4 and 7
+ar.wall(room7_leftX + room7_Width, owt, room7_leftX + room7_Width + iwt, room7_Height, "room7and4Wall")  # wall between rooms 4 and 7
+ar.text(room7_leftX + 1.0, 2.0, "Zi 7", roomFontSize)
+ar.text(houseWidth - 2.0, 2.0, "Zi 4", roomFontSize)
+ar.wall(room7_leftX, owt+stairWidth, room7_leftX + iwt, room7_Height, "room7Wall_1")
+ar.wall(room7_leftX + iwt, owt+stairWidth, room7_leftX + iwt + room7_stair_edge, owt+stairWidth+iwt, "room7Wall_2")
+ar.wall(room7_leftX + room7_stair_edge, owt, room7_leftX + iwt + room7_stair_edge, owt+stairWidth+iwt, "room7Wall_3")
+ar.difference((owt+garageWidth+iwt+3, room7_Height-iwt-e, 0.0 + e), (owt+garageWidth+iwt+3.9, room7_Height+e, 2.0 + e), "door7", "room7and4Wall", extendAlongAxis=0)  # door
+ar.difference((owt+garageWidth+iwt+6, room7_Height-iwt-e, 0.0 + e), (owt+garageWidth+iwt+6.9, room7_Height+e, 2.0 + e), "door4", "room7and4Wall", extendAlongAxis=0)  # door
 
-# room2 in first floor
-room2Width = 3.5
-room2Height = 5.0
-r2_x = houseWidth - owt - room2Width - iwt
-r2_y = r1_y + iwt + room2Height
-ar.wall(r2_x, r1_y, r2_x + iwt, r2_y, "frontWallRoom5")
-ar.wall(r2_x, r2_y - iwt, houseWidth, r2_y)
-ar.text(r2_x + 1.0, r2_y - 2.0, "Zi 5", roomFontSize)
-ar.difference((owt + garageWidth + iwt + 4.0, 5.0, e), (owt + garageWidth + iwt + 4.0 + iwt, 6.0, 2.25), "doorRoom5",  "frontWallRoom5", extendAlongAxis = 0)  # door to room 5
 
-# room6 in first floor
-ar.wall(owt + garageWidth + iwt, 6.5, owt + garageWidth + iwt + 4.0, 6.5 + iwt, "room6Wall")
-ar.difference((owt + garageWidth + iwt + 2.5, 6.5, e), (owt + garageWidth + iwt + 3.5, 6.5 + iwt, 2.25), "doorRoom6", "room6Wall", extendAlongAxis = 1)  # door to room 6
+# toilet in first floor
+toiletHeight = 2.5
+toiletWidth = 1.8
+ar.wallStartSize(owt+garageWidth+iwt, houseHeight-owt-toiletHeight, toiletWidth, iwt, "toiletWall")
+ar.difference((owt+garageWidth+iwt+0.2, houseHeight-owt-toiletHeight-e, 0.0 + e), (owt+garageWidth+iwt+0.9, houseHeight-owt-toiletHeight+iwt+e, 2.0 + e), "doorToilet", "toiletWall", extendAlongAxis=0)  # doorLivingRoom
+ar.text(owt+garageWidth + 1.0, houseHeight-owt-1.0, "WC", roomFontSize)
 
-# room7 in first floor
-ar.wall(owt + garageWidth + iwt + 1.6, 4.0, owt + garageWidth + iwt + 1.6 + iwt, owt, "room7Wall")
-ar.wall(owt + garageWidth + iwt + 1.6, 4.0, owt + garageWidth + iwt + 4.0, 4.0 - iwt, "room7Wall")
-#ar.difference((owt + garageWidth + iwt + 2.5, 6.5, e), (owt + garageWidth + iwt + 3.5, 6.5 + iwt, 2.25), "doorRoom7", "room7Wall", extendAlongAxis = 1)  # door to room 7
 
+# rooms 5 and 6 in first floor
+leftRoom6 = owt+garageWidth+iwt+toiletWidth
+leftRoom5 = leftRoom6 + 3.0
+y = room7_Height + 1.2
+h = houseHeight - owt - y
+ar.wallStartSize(leftRoom6, y, houseWidth - leftRoom6, iwt, "wallRooms56")
+ar.wallStartSize(leftRoom6, y, iwt, h)
+ar.wallStartSize(leftRoom5, y, iwt, h)
+ar.difference((owt+garageWidth+iwt+3, y-e, 0.0 + e), (owt+garageWidth+iwt+3.9, y+iwt+e, 2.0 + e), "door5", "wallRooms56", extendAlongAxis=0)  # door
+ar.difference((owt+garageWidth+iwt+6, y-e, 0.0 + e), (owt+garageWidth+iwt+6.9, y+iwt+e, 2.0 + e), "door6", "wallRooms56", extendAlongAxis=0)  # door
 
 
 # stairs
@@ -360,6 +366,16 @@ plt.show()
 ar.savePolygonAsSVG(ar.polygon)
 
 ar.svgFile.closeFile()
+
+####################################################################
+####################################################################
+### ANIMATION
+####################################################################
+
+
+### does not work: blender says "context is incorrect"
+#ar.mf.animTest()
+
 
 ar.mf.closeFile()
 

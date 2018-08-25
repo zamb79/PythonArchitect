@@ -42,6 +42,9 @@ def wall(x1, y1, x2, y2, name = "wall", color=(0.5, 0.5, 0.5)):
     global etage
     rect(x1, y1, x2, y2)    
     mf.quad(name, (x1,y1,etage * etageHeight), (x2,y2,(etage * etageHeight + wallHeight)), color)
+    
+def wallStartSize(x, y, width, height, name = "wall", color=(0.5, 0.5, 0.5)):
+    wall(x, y, x+width, y+height, name, color)
 
 def difference(pt1, pt2, diffName, surroundingWallName = "wall", extendAlongAxis = -1):
     global etage
