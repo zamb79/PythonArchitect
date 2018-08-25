@@ -101,3 +101,6 @@ generatedBlenderCode/generateGround.py
 exampleHouse/generatedFiles/generateCad.py
 exampleHouse/generatedFiles/plan_firstFloor.svg
 exampleHouse/generatedFiles/plan_groundFloor.svg
+examples/generatedFiles/plan_groundFloor.svg
+examples/generatedFiles/plan_firstFloor.svg
+examples/generatedFiles/generateCad.py
