@@ -267,6 +267,12 @@ ar.difference((owt + garageWidth + iwt + 4.0, 5.0, e), (owt + garageWidth + iwt 
 ar.wall(owt + garageWidth + iwt, 6.5, owt + garageWidth + iwt + 4.0, 6.5 + iwt, "room6Wall")
 ar.difference((owt + garageWidth + iwt + 2.5, 6.5, e), (owt + garageWidth + iwt + 3.5, 6.5 + iwt, 2.25), "doorRoom6", "room6Wall", extendAlongAxis = 1)  # door to room 6
 
+# room7 in first floor
+ar.wall(owt + garageWidth + iwt + 1.6, 4.0, owt + garageWidth + iwt + 1.6 + iwt, owt, "room7Wall")
+ar.wall(owt + garageWidth + iwt + 1.6, 4.0, owt + garageWidth + iwt + 4.0, 4.0 - iwt, "room7Wall")
+#ar.difference((owt + garageWidth + iwt + 2.5, 6.5, e), (owt + garageWidth + iwt + 3.5, 6.5 + iwt, 2.25), "doorRoom7", "room7Wall", extendAlongAxis = 1)  # door to room 7
+
+
 
 # stairs
 #ar.drawStairs(stairsX, stairsY - stairDepth * 8, 'v', 8, stairWidth, stairDepth, stairHeight)
