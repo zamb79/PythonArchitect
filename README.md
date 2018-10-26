@@ -10,4 +10,16 @@ code from the Python console of Blender.
 
 The current version is developed for (and tested with) Blender 2.79 and Python 3.5.2.
 
+Screenshots from Blender for the example house that is included are shown below:
+
+![alt text](https://github.com/zamb79/PythonArchitect/tree/master/images/001.png)
+
+![alt text](https://github.com/zamb79/PythonArchitect/tree/master/images/002.png)
+
+![alt text](https://github.com/zamb79/PythonArchitect/tree/master/images/003.png)
+
+![alt text](https://github.com/zamb79/PythonArchitect/tree/master/images/004.png)
+
+![alt text](https://github.com/zamb79/PythonArchitect/tree/master/images/005.png)
+
 
