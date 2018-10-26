@@ -12,14 +12,13 @@ The current version is developed for (and tested with) Blender 2.79 and Python 3
 
 Screenshots from Blender for the example house that is included are shown below:
 
-![alt text](https://github.com/zamb79/PythonArchitect/tree/master/images/001.png)
+![alt text](https://raw.githubusercontent.com/zamb79/PythonArchitect/master/images/001.png)
 
-![alt text](https://github.com/zamb79/PythonArchitect/tree/master/images/002.png)
+![alt text](https://raw.githubusercontent.com/zamb79/PythonArchitect/master/images/002.png)
 
-![alt text](https://github.com/zamb79/PythonArchitect/tree/master/images/003.png)
+![alt text](https://raw.githubusercontent.com/zamb79/PythonArchitect/master/images/003.png)
 
-![alt text](https://github.com/zamb79/PythonArchitect/tree/master/images/004.png)
+![alt text](https://raw.githubusercontent.com/zamb79/PythonArchitect/master/images/004.png)
 
-![alt text](https://github.com/zamb79/PythonArchitect/tree/master/images/005.png)
-
+![alt text](https://raw.githubusercontent.com/zamb79/PythonArchitect/master/images/005.png)
 
