@@ -70,6 +70,10 @@ def difference(pt1, pt2, diffName, surroundingWallName = "wall", extendAlongAxis
     pt1 = (x1 - extX, y1 - extY, etage * etageHeight + z1 - extZ)
     pt2 = (x2 + extX, y2 + extY, etage * etageHeight + z2 + extZ)
     mf.difference(pt1, pt2, diffName, surroundingWallName)
+    
+def differenceAndDelete(pt1, pt2, diffName, surroundingWallName = "wall", extendAlongAxis = -1):
+    difference(pt1, pt2, diffName, surroundingWallName, extendAlongAxis)
+    mf.deleteObject(diffName)
 
 def line(x1, y1, x2, y2):
     x1 = x1 + startX

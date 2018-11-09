@@ -11,7 +11,7 @@ import svg
 import blenderMesh as bm
 import architecture as ar
 
-ar.startX = 11.0
+ar.startX = 7.0
 ar.startY = 5.0
 
 ar.svgHeight = 744.09448
@@ -29,8 +29,7 @@ ar.initSvgFile("generatedFiles/plan_groundFloor.svg")
 ar.initMeshFile("generatedFiles/generateCad.py")
 
 # units: 1 = 1m
-
-houseWidth = 8.0
+houseWidth = 10.0
 houseHeight = 10.0
 
 outWallThick = 0.5
@@ -78,11 +77,15 @@ for i in range(0, len(groundBorderPts)):
     faces.append([idx1, idx2, idx3])
     faces.append([idx3, idx4, idx1])
 
+# move the ground points
+for i in range(0, groundPts.shape[0]):
+    groundPts[i, 0] -= 5
+    groundPts[i, 2] -= 2.8
+
 ar.mf.mesh("ground", groundPts, faces, (0.8, 1.0, 0.0))
 
 # cut out the house from the ground
-ar.mf.difference((-4.0, -10.0, 0.0), (houseWidth, houseHeight, 5.0), "houseBox", "ground")  # garage door
-ar.mf.difference((0.0, 0.0, -0.4), (houseWidth, houseHeight, 0.05), "houseBoxFloor", "ground")  # garage door
+ar.mf.difference((0.0, -6.0, -0.4), (houseWidth, houseHeight, 5.0), "houseBox", "ground")
 
 
 				
@@ -105,7 +108,7 @@ ar.wall(houseWidth-owt, 0, houseWidth, houseHeight, "ground_w4")
 ar.difference((0.8, 0.0, 0.0), (5.2, owt, 2.25), "garageDoor", "ground_w1")  # garage door
 ar.difference((6.5, 0, 1.2), (7.5, owt, 2.0), "window1", "ground_w1")  # window 1
 ar.difference((8.4, 0, 0), (9.4, owt, 2.1), "mainEntrance", "ground_w1")  # main house entrance door
-ar.difference((12.0, 0, 1.2), (13.0, owt, 2.0), "window2", "ground_w1")  # window 2
+#ar.difference((12.0, 0, 1.2), (13.0, owt, 2.0), "window2", "ground_w1")  # window 2
 
 # garage 
 garageWidth = 5.0
@@ -223,9 +226,9 @@ ar.text(3, 12, "Erster Stock", 20)
 brown = (0.95, 0.4, 0.13)
 ar.wall(owt, 0, houseWidth-owt, owt, name="first_w1", color=brown)
 ar.difference((0.8, 0, 0), (3.8, owt, 2.25), "terrasseDoorSouth", "first_w1")  # terrasseDoorSouth
-ar.difference((6.5, 0, 1.0), (7.3, owt, 2.0), "window3", "first_w1")  # window 3
-ar.difference((8.4, 0, 1.0), (9.2, owt, 2.0), "window4", "first_w1")  # window 4
-ar.difference((12.0, 0, 1.0), (12.8, owt, 2.0), "window5", "first_w1")  # window 5
+#ar.difference((6.5, 0, 1.0), (7.3, owt, 2.0), "window3", "first_w1")  # window 3
+#ar.difference((8.4, 0, 1.0), (9.2, owt, 2.0), "window4", "first_w1")  # window 4
+#ar.difference((12.0, 0, 1.0), (12.8, owt, 2.0), "window5", "first_w1")  # window 5
 ar.wall(owt, houseHeight-owt, houseWidth-owt, houseHeight, name="first_w2", color=brown)
 ar.wall(0, 0, owt, houseHeight, name="first_w3", color=brown)
 ar.difference((0, 1.0, 0), (owt, 4.0, 2.25), "terrasseDoorWest", "first_w3")  # terrasseDoorWest
@@ -247,39 +250,43 @@ ar.mf.quad("baseFirstFloor", (0, 0, ar.wallHeight), (houseWidth, houseHeight, ar
 ar.difference((garageWidth+owt+iwt, owt, -1.0), (garageWidth+owt+iwt+stairWidth, owt+stairWidth+stairDepth*10, 1.0), "stairsHole", "baseFirstFloor")  # hole for stairs in floor of first floor
 
 # Balkon
-ar.mf.quad("Balkon", (0, -2, ar.wallHeight), (4, 0, ar.etageHeight))
+ar.mf.quad("Balkon", (0, -2, ar.wallHeight), (houseWidth, 0, ar.etageHeight))
 
 # Terrasse
-ar.mf.quad("Terrasse", (-4, -2, 0), (0, 10, ar.etageHeight))
+#ar.mf.quad("Terrasse", (-4, -2, 0), (0, 10, ar.etageHeight))
 
 ### ROOF
 
 ar.mf.quad("roofBase", (0, 0, (ar.etageHeight + ar.wallHeight)), (houseWidth, houseHeight, ar.etageHeight * 2), color=brown)
-ptsRF = list()
+ptsRL = list()
 ofsX = 0.5
 ofsY = 0.5
 roofStartHeight = ar.etageHeight * 2
-roofHeight = 2.0
-ptsRF.append((-ofsX, -ofsY, roofStartHeight))
-ptsRF.append((ofsX + houseWidth, -ofsY, roofStartHeight))
-ptsRF.append((ofsX + houseWidth, houseHeight * 0.5, roofStartHeight))
-ptsRF.append((-ofsX, houseHeight * 0.5, roofStartHeight))
-ptsRF.append((-ofsX, -ofsY, roofStartHeight+0.1))
-ptsRF.append((ofsX + houseWidth, -ofsY, roofStartHeight+0.1))
-ptsRF.append((ofsX + houseWidth, houseHeight * 0.5, roofStartHeight+roofHeight))
-ptsRF.append((-ofsX, houseHeight * 0.5, roofStartHeight+roofHeight))
-ar.mf.deformedQuad("roofFront", ptsRF, (1, 0, 0))
+roofHeight = 5.0
+ptsRL.append((-ofsX, -ofsY, roofStartHeight))
+ptsRL.append((houseWidth * 0.5, -ofsY, roofStartHeight))
+ptsRL.append((houseWidth * 0.5, houseHeight + ofsY, roofStartHeight))
+ptsRL.append((-ofsX, houseHeight, roofStartHeight))
+ptsRL.append((-ofsX, -ofsY, roofStartHeight+0.1))
+ptsRL.append((houseWidth * 0.5, -ofsY, roofStartHeight+roofHeight))
+ptsRL.append((houseWidth * 0.5, houseHeight + ofsY, roofStartHeight+roofHeight))
+ptsRL.append((-ofsX, houseHeight, roofStartHeight+0.1))
+ar.mf.deformedQuad("roofLeft", ptsRL, (1, 0, 0))
 
-ptsRB = list()
-ptsRB.append((-ofsX, houseHeight*0.5, roofStartHeight))
-ptsRB.append((ofsX + houseWidth , houseHeight*0.5, roofStartHeight))
-ptsRB.append((ofsX + houseWidth, ofsY + houseHeight, roofStartHeight))
-ptsRB.append((-ofsX, ofsY + houseHeight, roofStartHeight))
-ptsRB.append((-ofsX, houseHeight*0.5, roofStartHeight+roofHeight))
-ptsRB.append((ofsX + houseWidth , houseHeight*0.5, roofStartHeight+roofHeight))
-ptsRB.append((ofsX + houseWidth, ofsY + houseHeight, roofStartHeight))
-ptsRB.append((-ofsX, ofsY + houseHeight, roofStartHeight))
-ar.mf.deformedQuad("roofFront", ptsRB, (1, 0, 0))
+ptsRR = list()
+ptsRR.append((houseWidth * 0.5, -ofsY, roofStartHeight))
+ptsRR.append((houseWidth + ofsX, -ofsY, roofStartHeight))
+ptsRR.append((houseWidth + ofsX, houseHeight + ofsY, roofStartHeight))
+ptsRR.append((houseWidth * 0.5, houseHeight + ofsY, roofStartHeight))
+
+ptsRR.append((houseWidth * 0.5, -ofsY, roofStartHeight + roofHeight))
+ptsRR.append((houseWidth + ofsX, -ofsY, roofStartHeight + 0.1))
+ptsRR.append((houseWidth + ofsX, houseHeight + ofsY, roofStartHeight + 0.1))
+ptsRR.append((houseWidth * 0.5, houseHeight + ofsY, roofStartHeight + roofHeight))
+
+
+
+ar.mf.deformedQuad("roofRight", ptsRR, (1, 0, 0))
 
 
 ### Measure Lines
