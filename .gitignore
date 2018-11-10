@@ -104,3 +104,4 @@ exampleHouse/generatedFiles/plan_groundFloor.svg
 examples/generatedFiles/plan_groundFloor.svg
 examples/generatedFiles/plan_firstFloor.svg
 examples/generatedFiles/generateCad.py
+examples/generatedFiles/generateAnimation.py

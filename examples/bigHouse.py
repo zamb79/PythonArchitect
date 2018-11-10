@@ -9,6 +9,7 @@ from descartes.patch import PolygonPatch
 
 import svg
 import blenderMesh as bm
+import blenderAnim
 import architecture as ar
 
 # blender for animation:
@@ -384,21 +385,22 @@ ar.savePolygonAsSVG(ar.polygon)
 
 ar.svgFile.closeFile()
 
+ar.mf.closeFile()
+
 ####################################################################
 ####################################################################
 ### ANIMATION
 ####################################################################
 
+anim = blenderAnim.AnimFile()
 
-ar.mf.createKeyFrame( 1, 20.0, -30.0, 10.0, 70.0, 0.0, 40.0)
-ar.mf.createKeyFrame(25,  4.0, -30.0, 10.0, 70.0, 0.0, 0.0)
-ar.mf.createKeyFrame(50,  4.0, -10.0, 3.33, 60.0, 0.0, 0.0)
+anim.openFile("generatedFiles/generateAnimation.py")
 
-### does not work: blender says "context is incorrect"
-#ar.mf.animTest()
+anim.createKeyFrame( 1, 20.0, -30.0, 10.0, 70.0, 0.0, 40.0)
+anim.createKeyFrame(25,  4.0, -30.0, 10.0, 70.0, 0.0, 0.0)
+anim.createKeyFrame(50,  4.0, -10.0, 3.33, 90.0, 0.0, 0.0)
 
-
-ar.mf.closeFile()
+anim.closeFile()
 
 ####################################################################
 ####################################################################
