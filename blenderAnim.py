@@ -18,24 +18,24 @@ class AnimFile:
     def closeFile(self):
         self.file.close()
 
-    def createKeyFrameStr(self, frameNum, x, y, z, rotX, rotY, rotZ):
+    def createKeyFrameStr(self, frameNum, x, y, z, rotX, rotY, rotZ, objName = "Camera"):
         pi = math.pi
         keyFrameStr = """
 bpy.ops.object.select_all(action=\'DESELECT\')
-bpy.data.objects['Camera'].select=True
+bpy.data.objects['""" + objName + """'].select=True
 bpy.context.scene.frame_set({:d})
-bpy.data.objects['Camera'].rotation_euler[0] = {:f}
-bpy.data.objects['Camera'].rotation_euler[1] = {:f}
-bpy.data.objects['Camera'].rotation_euler[2] = {:f}
-bpy.data.objects['Camera'].location[0] = {:f}
-bpy.data.objects['Camera'].location[1] = {:f}
-bpy.data.objects['Camera'].location[2] = {:f}
+bpy.data.objects['""" + objName + """'].rotation_euler[0] = {:f}
+bpy.data.objects['""" + objName + """'].rotation_euler[1] = {:f}
+bpy.data.objects['""" + objName + """'].rotation_euler[2] = {:f}
+bpy.data.objects['""" + objName + """'].location[0] = {:f}
+bpy.data.objects['""" + objName + """'].location[1] = {:f}
+bpy.data.objects['""" + objName + """'].location[2] = {:f}
 bpy.ops.anim.keyframe_insert_menu(type='LocRotScale')
-""".format(frameNum,rotX/180.0*pi, rotY/180.0*pi, rotZ/180.0*pi, x, y, z)
-        return keyFrameStr
+"""
+        return keyFrameStr.format(frameNum,rotX/180.0*pi, rotY/180.0*pi, rotZ/180.0*pi, x, y, z)
         
-    def createKeyFrame(self, frameNum, x, y, z, rotX, rotY, rotZ):
-        self.file.write(self.createKeyFrameStr(frameNum, x, y, z, rotX, rotY, rotZ))
+    def createKeyFrame(self, frameNum, x, y, z, rotX, rotY, rotZ, objName = "Camera"):
+        self.file.write(self.createKeyFrameStr(frameNum, x, y, z, rotX, rotY, rotZ, objName))
         
     def animTest(self):
         self.file.write(self.createKeyFrameStr(0,  6, -30, 1.8, 90,   0, -45))

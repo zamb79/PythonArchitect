@@ -54,7 +54,19 @@ winH = 1.1
 ### CREATE LIGHT #################################################
 ####################################################################
 
+# lights outside
 ar.mf.createLight(4, -20, 20, 0.707, 0, 0, "SUN")
+ar.mf.createLight(-10, 5, 10, 0, 0, 0, "POINT")
+ar.mf.createLight(24, 5, 10, 0, 0, 0, "POINT")
+ar.mf.createLight(7, 20, 10, 0, 0, 0, "POINT")
+
+# lights inside
+ar.mf.createLight(3, 5, 2, 0, 0, 0, "POINT") # light in garage
+ar.mf.createLight(3, 5, 5.3, 0, 0, 0, "POINT") # light in living room
+ar.mf.createLight(8, 2.5, 2, 0, 0, 0, "POINT") # light behind main entrance
+
+
+
 
 
 
@@ -396,9 +408,30 @@ anim = blenderAnim.AnimFile()
 
 anim.openFile("generatedFiles/generateAnimation.py")
 
-anim.createKeyFrame( 1, 20.0, -30.0, 10.0, 70.0, 0.0, 40.0)
-anim.createKeyFrame(25,  4.0, -30.0, 10.0, 70.0, 0.0, 0.0)
-anim.createKeyFrame(50,  4.0, -10.0, 3.33, 90.0, 0.0, 0.0)
+framesPerPose = 10
+anim.createKeyFrame( 1, 41.97, -27.51, 39.46, 49.5, 0.654, 48.8)
+anim.createKeyFrame( framesPerPose * 1, 30.4, -18.7, 9.8, 76.8, 0.8, 49.1)
+anim.createKeyFrame( framesPerPose * 2, 3.7, -29.9, 11.9, 75.6, 0.8, 0)
+anim.createKeyFrame( framesPerPose * 3, -20.9, -21.3, 12.8, 71.9, 0.79, -42.4)
+anim.createKeyFrame( framesPerPose * 4, -24.1, 2.6, 9.3, 76.4, 0.802, -86)
+anim.createKeyFrame( framesPerPose * 5, -19.5, 30.6, 16.2, 69.1, 0.77, -134)
+anim.createKeyFrame( framesPerPose * 6, 7.59, 40.2, 17.8, 67.5, 0.768, -183)
+anim.createKeyFrame( framesPerPose * 7, 37.55, 22.77, 14.5, 71.1, 0.785, -238)
+anim.createKeyFrame( framesPerPose * 8, 36.5, -10.33, 1.01, 93.2, 0.827, -297)
+anim.createKeyFrame( framesPerPose * 9, 41.97, -27.51, 39.46, 49.5, 0.654, -312)
+anim.createKeyFrame( framesPerPose * 10, 7.2, -7.3, 33.6, 21, 0.44, -0.275)
+#anim.createKeyFrame( 1,  )
+#anim.createKeyFrame( 1,  )
+
+
+###anim.createKeyFrame( 1,  20.0, -30.0, 10.0, 80.0, 0.0, 45.0)
+####anim.createKeyFrame(1, 0, 0, 0, 0, 0, 0, "ground_w1")
+###anim.createKeyFrame(5,  -20.0, -20.0, 10.0, 80.0, 0.0, -45.0)
+###anim.createKeyFrame(10, -10.0,  40.0, 10.0, 80.0, 0.0, -130.0)
+####anim.createKeyFrame(1, 0, 0, -5.0, 0, 0, 0, "ground_w1")
+###anim.createKeyFrame(15,  20.0,  40.0, 10.0, 80.0, 0.0, -210.0)
+###anim.createKeyFrame(20,  20.0, -30.0, 10.0, 80.0, 0.0, -250.0)
+###anim.createKeyFrame(25,  4.0, -10.0, 3.33, 90.0, 0.0, 0.0)
 
 anim.closeFile()
 
