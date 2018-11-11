@@ -5,8 +5,8 @@ headStr = """import bpy
 import mathutils
 from mathutils import Vector
 
-# convenince function for removing all objects
-def removeAll():
+# convenince function for removing all mesh objects
+def removeAllMeshes():
     for o in bpy.data.objects:
         if o.type == 'MESH':
             o.select = True
@@ -16,7 +16,7 @@ def removeAll():
     # call the operator once
     bpy.ops.object.delete()
 
-removeAll()
+###removeAllMeshes()
 
 """
 
@@ -77,7 +77,7 @@ bpy.ops.object.mode_set(mode='OBJECT')
 
 
 
-class MeshFile:
+class BlenderScript:
     
     file = None
     
@@ -178,4 +178,26 @@ class MeshFile:
         self.file.write("bpy.context.selected_objects[0].location=({:f}, {:f}, {:f})\n".format(x, y, z))
         self.file.write("bpy.context.selected_objects[0].rotation_euler=({:f}, {:f}, {:f})\n".format(rotX, rotY, rotZ))
         
-
+    def createKeyFrameStr(self, frameNum, x, y, z, rotX, rotY, rotZ, objName = "Camera"):
+        pi = math.pi
+        keyFrameStr = """
+bpy.ops.object.select_all(action=\'DESELECT\')
+bpy.data.objects['""" + objName + """'].select=True
+bpy.context.scene.frame_set({:d})
+bpy.data.objects['""" + objName + """'].rotation_euler[0] = {:f}
+bpy.data.objects['""" + objName + """'].rotation_euler[1] = {:f}
+bpy.data.objects['""" + objName + """'].rotation_euler[2] = {:f}
+bpy.data.objects['""" + objName + """'].location[0] = {:f}
+bpy.data.objects['""" + objName + """'].location[1] = {:f}
+bpy.data.objects['""" + objName + """'].location[2] = {:f}
+bpy.ops.anim.keyframe_insert_menu(type='LocRotScale')
+"""
+        return keyFrameStr.format(frameNum,rotX/180.0*pi, rotY/180.0*pi, rotZ/180.0*pi, x, y, z)
+        
+    def createKeyFrame(self, frameNum, x, y, z, rotX, rotY, rotZ, objName = "Camera"):
+        self.file.write(self.createKeyFrameStr(frameNum, x, y, z, rotX, rotY, rotZ, objName))
+        
+    def animTest(self):
+        self.file.write(self.createKeyFrameStr(0,  6, -30, 1.8, 90,   0, -45))
+        self.file.write(self.createKeyFrameStr(10, 6, -20,   3, 90,  -5, -45))
+        self.file.write(self.createKeyFrameStr(20, 6, -10,   4, 90, -20, -45))

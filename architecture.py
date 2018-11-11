@@ -4,10 +4,10 @@ from shapely.geometry import Polygon
 from descartes.patch import PolygonPatch
 
 import svg
-import blenderMesh as bm
+import blenderScript
 
 svgFile = None
-mf = None
+bs = None
 polygon = None
 
 startX = 7.0
@@ -40,14 +40,16 @@ def rect(x1, y1, x2, y2):
 
 def wall(x1, y1, x2, y2, name = "wall", color=(0.5, 0.5, 0.5)):
     global etage
+    global bs
     rect(x1, y1, x2, y2)    
-    mf.quad(name, (x1,y1,etage * etageHeight), (x2,y2,(etage * etageHeight + wallHeight)), color)
+    bs.quad(name, (x1,y1,etage * etageHeight), (x2,y2,(etage * etageHeight + wallHeight)), color)
     
 def wallStartSize(x, y, width, height, name = "wall", color=(0.5, 0.5, 0.5)):
     wall(x, y, x+width, y+height, name, color)
 
 def difference(pt1, pt2, diffName, surroundingWallName = "wall", extendAlongAxis = -1):
     global etage
+    global bs
     extX = 0
     extY = 0
     extZ = 0
@@ -69,11 +71,12 @@ def difference(pt1, pt2, diffName, surroundingWallName = "wall", extendAlongAxis
 	    svgFile.writeRect(svgScale*(startX+x1), svgHeight-svgScale*(startY+y2), svgScale*(x2-x1), svgScale*(y2-y1), "#bbbbbb")
     pt1 = (x1 - extX, y1 - extY, etage * etageHeight + z1 - extZ)
     pt2 = (x2 + extX, y2 + extY, etage * etageHeight + z2 + extZ)
-    mf.difference(pt1, pt2, diffName, surroundingWallName)
+    bs.difference(pt1, pt2, diffName, surroundingWallName)
     
 def differenceAndDelete(pt1, pt2, diffName, surroundingWallName = "wall", extendAlongAxis = -1):
+    global bs
     difference(pt1, pt2, diffName, surroundingWallName, extendAlongAxis)
-    mf.deleteObject(diffName)
+    bs.deleteObject(diffName)
 
 def line(x1, y1, x2, y2):
     x1 = x1 + startX
@@ -107,20 +110,20 @@ def measureLine(x, y, align, length, skewLineWidth, scaling = 1):
     text((x+x2) / 2.0 + ofsX, (y+y2) / 2.0 + ofsY, str(length * scaling), 9)    
 
 def drawStairs(x, y, align, numStairs, stairWidth, stairDepth, stairHeight):
-    global mf
+    global bs
     line(x+stairWidth, y+stairWidth, x+stairWidth+stairDepth*4, y+stairWidth)
     line(x+stairWidth, y+stairWidth, x+stairWidth, y+stairWidth+stairDepth*10)
     for i in range(0,5):
         z1 = stairHeight * (float(i)+0.5)
         z2 = stairHeight * (i+1)
         line(x+stairWidth+(stairDepth*(4-i)), y, x+stairWidth+(stairDepth*(4-i)), y+stairWidth)
-        mf.quad("stair", (x+stairWidth+(stairDepth*(3-i)), y, z1), (x+stairWidth+(stairDepth*(4-i)), y+stairWidth, z2))
+        bs.quad("stair", (x+stairWidth+(stairDepth*(3-i)), y, z1), (x+stairWidth+(stairDepth*(4-i)), y+stairWidth, z2))
     for i in range(0,11):
         z1 = stairHeight * (float(i)+5.5)
         z2 = stairHeight * (i+6)
         line(x, y+stairWidth+i*stairDepth, x+stairWidth, y+stairWidth+i*stairDepth)
-        mf.quad("stair", (x, y+stairWidth+i*stairDepth, z1), (x+stairWidth, y+stairWidth+(i+1)*stairDepth, z2))
-    mf.quad("stair", (x, y, stairHeight * 4.5), (x+stairWidth, y+stairWidth, stairHeight * 5))
+        bs.quad("stair", (x, y+stairWidth+i*stairDepth, z1), (x+stairWidth, y+stairWidth+(i+1)*stairDepth, z2))
+    bs.quad("stair", (x, y, stairHeight * 4.5), (x+stairWidth, y+stairWidth, stairHeight * 5))
 
 def savePolygonAsSVG_flipY(xyCoords):
     global svgFile
@@ -170,9 +173,9 @@ def initSvgFile(fileName):
     svgFile.openFile(fileName)
 	
 def initMeshFile(fileName):
-    global mf
-    mf = bm.MeshFile()
-    mf.openFile(fileName)
+    global bs
+    bs = blenderScript.BlenderScript()
+    bs.openFile(fileName)
 				
 ####################################################################
 ### GROUND FLOOR ###################################################

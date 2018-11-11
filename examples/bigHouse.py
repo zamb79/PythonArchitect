@@ -8,8 +8,7 @@ from shapely.geometry import Polygon
 from descartes.patch import PolygonPatch
 
 import svg
-import blenderMesh as bm
-import blenderAnim
+import blenderScript
 import architecture as ar
 
 # blender for animation:
@@ -55,15 +54,15 @@ winH = 1.1
 ####################################################################
 
 # lights outside
-ar.mf.createLight(4, -20, 20, 0.707, 0, 0, "SUN")
-ar.mf.createLight(-10, 5, 10, 0, 0, 0, "POINT")
-ar.mf.createLight(24, 5, 10, 0, 0, 0, "POINT")
-ar.mf.createLight(7, 20, 10, 0, 0, 0, "POINT")
+ar.bs.createLight(4, -20, 20, 0.707, 0, 0, "SUN")
+ar.bs.createLight(-10, 5, 10, 0, 0, 0, "POINT")
+ar.bs.createLight(24, 5, 10, 0, 0, 0, "POINT")
+ar.bs.createLight(7, 20, 10, 0, 0, 0, "POINT")
 
 # lights inside
-ar.mf.createLight(3, 5, 2, 0, 0, 0, "POINT") # light in garage
-ar.mf.createLight(3, 5, 5.3, 0, 0, 0, "POINT") # light in living room
-ar.mf.createLight(8, 2.5, 2, 0, 0, 0, "POINT") # light behind main entrance
+ar.bs.createLight(3, 5, 2, 0, 0, 0, "POINT") # light in garage
+ar.bs.createLight(3, 5, 5.3, 0, 0, 0, "POINT") # light in living room
+ar.bs.createLight(8, 2.5, 2, 0, 0, 0, "POINT") # light behind main entrance
 
 
 
@@ -109,7 +108,7 @@ for i in range(0, len(groundBorderPts)):
     faces.append([idx1, idx2, idx3])
     faces.append([idx3, idx4, idx1])
 
-ar.mf.mesh("ground", groundPts, faces, (0.8, 1.0, 0.0))
+ar.bs.mesh("ground", groundPts, faces, (0.8, 1.0, 0.0))
 
 # cut out the house from the ground
 ar.differenceAndDelete((-4.0 - e, -10.0 - e, 0.0 - e), (houseWidth + e, houseHeight + e, 5.0 + e), "houseBox", "ground")
@@ -179,13 +178,13 @@ stairsY = owt
 ar.drawStairs(stairsX, stairsY, 'v', 8, stairWidth, stairDepth, stairHeight)
 
 # bottom of ground floor
-ar.mf.quad("base", (0, 0, -0.4), (houseWidth, houseHeight, 0))
+ar.bs.quad("base", (0, 0, -0.4), (houseWidth, houseHeight, 0))
 
 # bounding box of lower part of house
-#ar.mf.quad("houseBoundingBox", (0.0, 0.0, -0.4), (houseWidth, houseHeight, 5.0), (1, 1, 0.0))
-#ar.mf.setVisible("houseBoundingBox", False)
-#ar.mf.quad("Vorplatz", (0.0, -8, 0.0), (houseWidth, 1.0, 5.0), (1, 1, 0.0))
-#ar.mf.setVisible("Vorplatz", False)
+#ar.bs.quad("houseBoundingBox", (0.0, 0.0, -0.4), (houseWidth, houseHeight, 5.0), (1, 1, 0.0))
+#ar.bs.setVisible("houseBoundingBox", False)
+#ar.bs.quad("Vorplatz", (0.0, -8, 0.0), (houseWidth, 1.0, 5.0), (1, 1, 0.0))
+#ar.bs.setVisible("Vorplatz", False)
 
 # mesure lines
 
@@ -280,7 +279,7 @@ room7_Width = 3.0
 room7_Height = 4.2
 room7_stair_edge = 0.6
 ar.wall(room7_leftX, room7_Height, houseWidth-owt, room7_Height - iwt, "room7and4Wall")  # top wall of rooms 4 and 7
-ar.wall(room7_leftX + room7_Width, owt, room7_leftX + room7_Width + iwt, room7_Height, "room7and4Wall")  # wall between rooms 4 and 7
+ar.wall(room7_leftX + room7_Width, owt, room7_leftX + room7_Width + iwt, room7_Height, "firstWall_2")  # wall between rooms 4 and 7
 ar.text(room7_leftX + 1.0, 2.0, "Zi 7", roomFontSize)
 ar.text(houseWidth - 2.0, 2.0, "Zi 4", roomFontSize)
 ar.wall(room7_leftX, owt+stairWidth, room7_leftX + iwt, room7_Height, "room7Wall_1")
@@ -320,18 +319,18 @@ ar.wall(garageWidth+owt, owt, garageWidth+owt+iwt, houseHeight-owt, name="wallWZ
 ar.differenceAndDelete((garageWidth+owt, 4.0, 0.0 + e), (garageWidth+owt+iwt, 6-0, 2.0), "doorLivingRoom", "wallWZ", extendAlongAxis=0)  # doorLivingRoom
 ar.text(3.0, 3.0, "Wohnzimmer", roomFontSize)
 
-ar.mf.quad("baseFirstFloor", (0, 0, ar.wallHeight), (houseWidth, houseHeight, ar.etageHeight))
+ar.bs.quad("baseFirstFloor", (0, 0, ar.wallHeight), (houseWidth, houseHeight, ar.etageHeight))
 ar.differenceAndDelete((garageWidth+owt+iwt, owt, -1.0), (garageWidth+owt+iwt+stairWidth, owt+stairWidth+stairDepth*10, 1.0), "stairsHole", "baseFirstFloor")  # hole for stairs in floor of first floor
 
 # Balkon
-ar.mf.quad("Balkon", (0, -2, ar.wallHeight), (4, 0, ar.etageHeight))
+ar.bs.quad("Balkon", (0, -2, ar.wallHeight), (4, 0, ar.etageHeight))
 
 # Terrasse
-ar.mf.quad("Terrasse", (-4, -2, 0), (0, 10, ar.etageHeight))
+ar.bs.quad("Terrasse", (-4, -2, 0), (0, 10, ar.etageHeight))
 
 ### ROOF
 
-ar.mf.quad("roofBase", (0, 0, (ar.etageHeight + ar.wallHeight)), (houseWidth, houseHeight, ar.etageHeight * 2), color=brown)
+ar.bs.quad("roofBase", (0, 0, (ar.etageHeight + ar.wallHeight)), (houseWidth, houseHeight, ar.etageHeight * 2), color=brown)
 ptsRF = list()
 ofsX = 0.5
 ofsY = 0.5
@@ -345,7 +344,7 @@ ptsRF.append((-ofsX, -ofsY, roofStartHeight+0.1))
 ptsRF.append((ofsX + houseWidth, -ofsY, roofStartHeight+0.1))
 ptsRF.append((ofsX + houseWidth, houseHeight * 0.5, roofStartHeight+roofHeight))
 ptsRF.append((-ofsX, houseHeight * 0.5, roofStartHeight+roofHeight))
-ar.mf.deformedQuad("roofFront", ptsRF, (1, 0, 0))
+ar.bs.deformedQuad("roofFront", ptsRF, (1, 0, 0))
 
 ptsRB = list()
 ptsRB.append((-ofsX, houseHeight*0.5, roofStartHeight))
@@ -356,7 +355,7 @@ ptsRB.append((-ofsX, houseHeight*0.5, roofStartHeight+roofHeight))
 ptsRB.append((ofsX + houseWidth , houseHeight*0.5, roofStartHeight+roofHeight))
 ptsRB.append((ofsX + houseWidth, ofsY + houseHeight, roofStartHeight))
 ptsRB.append((-ofsX, ofsY + houseHeight, roofStartHeight))
-ar.mf.deformedQuad("roofBack", ptsRB, (1, 0, 0))
+ar.bs.deformedQuad("roofBack", ptsRB, (1, 0, 0))
 
 
 ### Measure Lines
@@ -397,18 +396,20 @@ ar.savePolygonAsSVG(ar.polygon)
 
 ar.svgFile.closeFile()
 
-ar.mf.closeFile()
+ar.bs.closeFile()
 
 ####################################################################
 ####################################################################
 ### ANIMATION
 ####################################################################
 
-anim = blenderAnim.AnimFile()
+anim = blenderScript.BlenderScript()
 
 anim.openFile("generatedFiles/generateAnimation.py")
 
-framesPerPose = 10
+framesPerPose = 25
+explodeStart = 100
+explodeEnd = 150
 anim.createKeyFrame( 1, 41.97, -27.51, 39.46, 49.5, 0.654, 48.8)
 anim.createKeyFrame( framesPerPose * 1, 30.4, -18.7, 9.8, 76.8, 0.8, 49.1)
 anim.createKeyFrame( framesPerPose * 2, 3.7, -29.9, 11.9, 75.6, 0.8, 0)
@@ -419,19 +420,60 @@ anim.createKeyFrame( framesPerPose * 6, 7.59, 40.2, 17.8, 67.5, 0.768, -183)
 anim.createKeyFrame( framesPerPose * 7, 37.55, 22.77, 14.5, 71.1, 0.785, -238)
 anim.createKeyFrame( framesPerPose * 8, 36.5, -10.33, 1.01, 93.2, 0.827, -297)
 anim.createKeyFrame( framesPerPose * 9, 41.97, -27.51, 39.46, 49.5, 0.654, -312)
-anim.createKeyFrame( framesPerPose * 10, 7.2, -7.3, 33.6, 21, 0.44, -0.275)
-#anim.createKeyFrame( 1,  )
-#anim.createKeyFrame( 1,  )
+anim.createKeyFrame( framesPerPose * 10-1, 7.2, -7.3, 33.6, 21, 0.44, -360.275)
+anim.createKeyFrame( framesPerPose * 10  , 7.2, -7.3, 33.6, 21, 0.44,   -0.275)
+anim.createKeyFrame( framesPerPose * 14, 7.54, -14.8, 18.8, 48.7, 0.626, 2.64)
+
+# explode roof
+anim.createKeyFrame(framesPerPose * 9, 0, 0, 0, 0, 0, 0, "roofFront")
+anim.createKeyFrame(framesPerPose * 9, 0, 0, 0, 0, 0, 0, "roofBack")
+anim.createKeyFrame(framesPerPose * 9, 0, 0, 0, 0, 0, 0, "roofBase")
+anim.createKeyFrame(framesPerPose * 10, 20, 0, 0, 0, 0, 0, "roofFront")
+anim.createKeyFrame(framesPerPose * 10, -20, 0, 0, 0, 0, 0, "roofBack")
+anim.createKeyFrame(framesPerPose * 10, 0, 20, 0, 0, 0, 0, "roofBase")
+
+# explode first floor
+anim.createKeyFrame(framesPerPose * 11, 0, 0, 0, 0, 0, 0, "first_w1")
+anim.createKeyFrame(framesPerPose * 11, 0, 0, 0, 0, 0, 0, "first_w2")
+anim.createKeyFrame(framesPerPose * 11, 0, 0, 0, 0, 0, 0, "first_w3")
+anim.createKeyFrame(framesPerPose * 11, 0, 0, 0, 0, 0, 0, "first_w4")
+anim.createKeyFrame(framesPerPose * 11, 0, 0, 0, 0, 0, 0, "room7and4Wall")
+anim.createKeyFrame(framesPerPose * 11, 0, 0, 0, 0, 0, 0, "firstWall_2")
+anim.createKeyFrame(framesPerPose * 11, 0, 0, 0, 0, 0, 0, "room7Wall_1")
+anim.createKeyFrame(framesPerPose * 11, 0, 0, 0, 0, 0, 0, "room7Wall_2")
+anim.createKeyFrame(framesPerPose * 11, 0, 0, 0, 0, 0, 0, "room7Wall_3")
+anim.createKeyFrame(framesPerPose * 11, 0, 0, 0, 0, 0, 0, "wallRooms56")
+anim.createKeyFrame(framesPerPose * 11, 0, 0, 0, 0, 0, 0, "wallWZ")
+anim.createKeyFrame(framesPerPose * 11, 0, 0, 0, 0, 0, 0, "room7and4Wall.001")
+anim.createKeyFrame(framesPerPose * 11, 0, 0, 0, 0, 0, 0, "wall.002")
+anim.createKeyFrame(framesPerPose * 11, 0, 0, 0, 0, 0, 0, "wall.003")
+anim.createKeyFrame(framesPerPose * 11, 0, 0, 0, 0, 0, 0, "toiletWall")
+anim.createKeyFrame(framesPerPose * 11, 0, 0, 0, 0, 0, 0, "baseFirstFloor")
 
 
-###anim.createKeyFrame( 1,  20.0, -30.0, 10.0, 80.0, 0.0, 45.0)
-####anim.createKeyFrame(1, 0, 0, 0, 0, 0, 0, "ground_w1")
-###anim.createKeyFrame(5,  -20.0, -20.0, 10.0, 80.0, 0.0, -45.0)
-###anim.createKeyFrame(10, -10.0,  40.0, 10.0, 80.0, 0.0, -130.0)
-####anim.createKeyFrame(1, 0, 0, -5.0, 0, 0, 0, "ground_w1")
-###anim.createKeyFrame(15,  20.0,  40.0, 10.0, 80.0, 0.0, -210.0)
-###anim.createKeyFrame(20,  20.0, -30.0, 10.0, 80.0, 0.0, -250.0)
-###anim.createKeyFrame(25,  4.0, -10.0, 3.33, 90.0, 0.0, 0.0)
+anim.createKeyFrame(framesPerPose * 12, 0, -20, 0, 0, 0, 0, "first_w1")
+anim.createKeyFrame(framesPerPose * 12, 0, 20, 0, 0, 0, 0, "first_w2")
+anim.createKeyFrame(framesPerPose * 12, -20, 0, 0, 0, 0, 0, "first_w3")
+anim.createKeyFrame(framesPerPose * 12, 20, 0, 0, 0, 0, 0, "first_w4")
+anim.createKeyFrame(framesPerPose * 12, 0, 0, 10, 0, 0, 0, "room7and4Wall")
+anim.createKeyFrame(framesPerPose * 12, 0, 0, 10, 0, 0, 0, "firstWall_2")
+anim.createKeyFrame(framesPerPose * 12, 0, 0, 10, 0, 0, 0, "room7Wall_1")
+anim.createKeyFrame(framesPerPose * 12, 0, 0, 10, 0, 0, 0, "room7Wall_2")
+anim.createKeyFrame(framesPerPose * 12, 0, 0, 10, 0, 0, 0, "room7Wall_3")
+anim.createKeyFrame(framesPerPose * 12, 0, 0, 10, 0, 0, 0, "wallRooms56")
+anim.createKeyFrame(framesPerPose * 12, 0, 0, 10, 0, 0, 0, "wallWZ")
+anim.createKeyFrame(framesPerPose * 12, 0, 0, 10, 0, 0, 0, "room7and4Wall.001")
+anim.createKeyFrame(framesPerPose * 12, 0, 0, 10, 0, 0, 0, "wall.002")
+anim.createKeyFrame(framesPerPose * 12, 0, 0, 10, 0, 0, 0, "wall.003")
+anim.createKeyFrame(framesPerPose * 12, 0, 0, 10, 0, 0, 0, "toiletWall")
+anim.createKeyFrame(framesPerPose * 12, -20, 0, 0, 0, 0, 0, "baseFirstFloor")
+
+
+# remove ground front wall
+anim.createKeyFrame(framesPerPose * 13, 0, 0, 0, 0, 0, 0, "ground_w1")
+anim.createKeyFrame(framesPerPose * 14, -20, 0, 0, 0, 0, 0, "ground_w1")
+
+
 
 anim.closeFile()
 
