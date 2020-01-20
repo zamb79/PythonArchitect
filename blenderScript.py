@@ -18,6 +18,9 @@ def removeAllMeshes():
 
 ###removeAllMeshes()
 
+myCol = bpy.data.collections.new("collection")
+bpy.context.scene.collection.children.link(myCol)
+
 """
 
 quadStr = """
@@ -29,7 +32,7 @@ ob = bpy.data.objects.new(obName, me)
 
 ob = bpy.data.objects.new(obName)
 scn = bpy.context.scene
-scn.objects.link(ob)
+myCol.objects.link(ob)
 scn.objects.active = ob
 ob.select = True
 
@@ -57,7 +60,7 @@ ob = bpy.data.objects.new(obName, me)
 
 #ob = bpy.data.objects.new(obName)
 scn = bpy.context.scene
-scn.objects.link(ob)
+myCol.objects.link(ob)
 scn.objects.active = ob
 ob.select = True
 
@@ -75,11 +78,43 @@ me.update()
 bpy.ops.object.mode_set(mode='OBJECT')
 """
 
+wireframeStartStr = """
+meshName = "{:s}"
+obName = "{:s}"
+
+me = bpy.data.meshes.new(meshName)
+ob = bpy.data.objects.new(obName, me)
+
+#ob = bpy.data.objects.new(obName)
+scn = bpy.context.scene
+myCol.objects.link(ob)
+scn.objects.active = ob
+ob.select = True
+
+verts = list()
+edges = list()
+"""
+
+wireframeEndStr = """
+me.from_pydata(verts, edges, [])
+
+bpy.ops.object.mode_set(mode='EDIT')
+
+me.update()
+
+bpy.ops.object.mode_set(mode='OBJECT')
+"""
 
 
 class BlenderScript:
     
     file = None
+    
+    def __init__(self, fileName):
+        self.openFile(fileName)
+        
+    def __del__(self):
+        self.closeFile()
     
     def openFile(self, fileName):
         self.file = open(fileName, "wt")
@@ -103,12 +138,34 @@ class BlenderScript:
         outStr = outStr + "activeObject = bpy.context.active_object #Set active object to variable\n"
         outStr = outStr + "mat = bpy.data.materials.new(name=\"MaterialName\") #set new material to\n"
         outStr = outStr + "activeObject.data.materials.append(mat) #add the material to the object\n"
-        outStr = outStr + "bpy.context.object.active_material.diffuse_color = (" + str(color[0]) +  ", " + str(color[1]) +  ", " + str(color[2]) +  ") #change color\n"
+        #outStr = outStr + "bpy.context.object.active_material.diffuse_color = (" + str(color[0]) +  ", " + str(color[1]) +  ", " + str(color[2]) +  ") #change color\n"
+        #outStr = outStr + "bpy.context.object.mat.diffuse_color = (" + str(color[0]) +  ", " + str(color[1]) +  ", " + str(color[2]) +  ") #change color\n"
+        return outStr
+        
+    def createWireframeStr(self, name, pts, edges, color = (0.5, 0.5, 0.5)):
+        outStr = ""
+        outStr = outStr + wireframeStartStr.format(name, name)
+        #print("edges: "+ str(len(edges)))
+        for v in pts:
+            #print(str(v))
+            outStr = outStr + "verts.append(({:f}, {:f}, {:f}))\n".format(float(v[0]), float(v[1]), float(v[2]))
+        for e in edges:
+            #print(str(f))
+            outStr = outStr + "edges.append(({:d}, {:d}))\n".format(int(e[0]), int(e[1]))
+        outStr = outStr + wireframeEndStr
+		
+        outStr = outStr + "activeObject = bpy.context.active_object #Set active object to variable\n"
+        outStr = outStr + "mat = bpy.data.materials.new(name=\"MaterialName\") #set new material to\n"
+        #outStr = outStr + "activeObject.data.materials.append(mat) #add the material to the object\n"
+        #outStr = outStr + "bpy.context.object.active_material.diffuse_color = (" + str(color[0]) +  ", " + str(color[1]) +  ", " + str(color[2]) +  ") #change color\n"
         #outStr = outStr + "bpy.context.object.mat.diffuse_color = (" + str(color[0]) +  ", " + str(color[1]) +  ", " + str(color[2]) +  ") #change color\n"
         return outStr
 
     def mesh(self, name, pts, faces, color = (0.5, 0.5, 0.5)):
         self.file.write(self.createMeshStr(name, pts, faces, color))
+        
+    def wireframe(self, name, pts, edges, color = (0.5, 0.5, 0.5)):
+        self.file.write(self.createWireframeStr(name, pts, edges, color))
         
     def quad(self, name, pt1, pt2, color = (0.5, 0.5, 0.5)):
         pts = list()
