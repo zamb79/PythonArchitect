@@ -9,9 +9,9 @@ from mathutils import Vector
 def removeAllMeshes():
     for o in bpy.data.objects:
         if o.type == 'MESH':
-            o.select = True
+            o.select_set(True)
         else:
-            o.select = False
+            o.select_set(False)
 
     # call the operator once
     bpy.ops.object.delete()
@@ -33,8 +33,8 @@ ob = bpy.data.objects.new(obName, me)
 ob = bpy.data.objects.new(obName)
 scn = bpy.context.scene
 myCol.objects.link(ob)
-scn.objects.active = ob
-ob.select = True
+bpy.context.view_layer.objects.active = ob
+ob.select_set(True)
 
 
 
@@ -61,8 +61,8 @@ ob = bpy.data.objects.new(obName, me)
 #ob = bpy.data.objects.new(obName)
 scn = bpy.context.scene
 myCol.objects.link(ob)
-scn.objects.active = ob
-ob.select = True
+bpy.context.view_layer.objects.active = ob
+ob.select_set(True)
 
 verts = list()
 faces = list()
@@ -88,8 +88,8 @@ ob = bpy.data.objects.new(obName, me)
 #ob = bpy.data.objects.new(obName)
 scn = bpy.context.scene
 myCol.objects.link(ob)
-scn.objects.active = ob
-ob.select = True
+bpy.context.view_layer.objects.active = ob
+ob.select_set(True)
 
 verts = list()
 edges = list()
@@ -210,7 +210,7 @@ class BlenderScript:
 
     def setVisible(self, objName, visibleState):
         self.file.write("objects = bpy.data.objects\n")
-        self.file.write("objects[\"" + objName + "\"].hide = " + str(not visibleState) + "\n")
+        self.file.write("objects[\"" + objName + "\"].hide_set(" + str(not visibleState) + ")\n")
 
     def difference(self, pt1, pt2, diffName, surroundingObjectName):
         self.quad(diffName, pt1, pt2, (0, 1, 0))
@@ -219,19 +219,20 @@ class BlenderScript:
         outStr = outStr + diffName + "_diffOp = objects[\'" + surroundingObjectName + "\'].modifiers.new(type=\"BOOLEAN\", name=\"" + diffName + "_diffOp\")\n"
         outStr = outStr + diffName + "_diffOp.object = objects[\'" + diffName + "\']\n"
         outStr = outStr + diffName + "_diffOp.operation = \'DIFFERENCE\'\n"
-        outStr = outStr + "objects[\'" + diffName + "\'].hide = True\n"
-        outStr = outStr + "bpy.context.scene.objects.active = bpy.data.objects[\"" + surroundingObjectName + "\"]\n"
+        outStr = outStr + "objects[\'" + diffName + "\'].hide_set(True)\n"
+        #outStr = outStr + "bpy.context.scene.objects.active = bpy.data.objects[\"" + surroundingObjectName + "\"]\n"
+        outStr = outStr + "bpy.context.view_layer.objects.active = bpy.data.objects[\"" + surroundingObjectName + "\"]\n"
         outStr = outStr + "bpy.ops.object.modifier_apply(modifier=\"" + diffName + "_diffOp\")\n"
         self.file.write(outStr)
 
     def deleteObject(self, objName):
         self.file.write("\nbpy.ops.object.select_all(action=\'DESELECT\')\n")
-        self.file.write("bpy.data.objects[\"" + objName + "\"].select=True\n")
+        self.file.write("bpy.data.objects[\"" + objName + "\"].select_set(True)\n")
         self.file.write("bpy.ops.object.delete()\n")
         
     def createLight(self, x, y, z, rotX, rotY, rotZ, lightType = "HEMI"):
         self.file.write("\nbpy.ops.object.select_all(action=\"DESELECT\")\n")
-        self.file.write("bpy.ops.object.lamp_add(type=\"" + lightType + "\")\n")
+        self.file.write("bpy.ops.object.light_add(type=\"" + lightType + "\")\n")
         self.file.write("bpy.context.selected_objects[0].location=({:f}, {:f}, {:f})\n".format(x, y, z))
         self.file.write("bpy.context.selected_objects[0].rotation_euler=({:f}, {:f}, {:f})\n".format(rotX, rotY, rotZ))
         
@@ -239,7 +240,7 @@ class BlenderScript:
         pi = math.pi
         keyFrameStr = """
 bpy.ops.object.select_all(action=\'DESELECT\')
-bpy.data.objects['""" + objName + """'].select=True
+bpy.data.objects['""" + objName + """'].select_set(True)
 bpy.context.scene.frame_set({:d})
 bpy.data.objects['""" + objName + """'].rotation_euler[0] = {:f}
 bpy.data.objects['""" + objName + """'].rotation_euler[1] = {:f}

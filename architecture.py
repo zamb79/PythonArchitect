@@ -174,8 +174,7 @@ def initSvgFile(fileName):
 	
 def initMeshFile(fileName):
     global bs
-    bs = blenderScript.BlenderScript()
-    bs.openFile(fileName)
+    bs = blenderScript.BlenderScript(fileName)
 				
 ####################################################################
 ### GROUND FLOOR ###################################################

@@ -403,9 +403,7 @@ ar.bs.closeFile()
 ### ANIMATION
 ####################################################################
 
-anim = blenderScript.BlenderScript()
-
-anim.openFile("generatedFiles/generateAnimation.py")
+anim = blenderScript.BlenderScript("generatedFiles/generateAnimation.py")
 
 framesPerPose = 25
 explodeStart = 100
