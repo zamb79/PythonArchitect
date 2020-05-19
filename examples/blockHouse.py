@@ -38,7 +38,7 @@ ar.initMeshFile("generatedFiles/generateCad.py")
 
 # units: 1 = 1m
 
-houseWidth = 11.0
+houseWidth = 12.0
 houseHeight = 8.0
 
 outWallThick = 0.5
